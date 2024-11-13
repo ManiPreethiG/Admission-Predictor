@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission Predictor</title>
+    <style>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+
+   </style>
+</head>
+<body>
+    <div class="container">
+        <h1>College Admission Success Predictor</h1>
+        <form id="admission-form" action="/predict" method="POST">
+            <div class="form-group">
+                <label for="gre_score">GRE Score:</label>
+                <input type="number" id="gre_score" name="gre_score" min="260" max="340" required>
+            </div>
+            <div class="form-group">
+                <label for="toefl_score">TOEFL Score:</label>
+                <input type="number" id="toefl_score" name="toefl_score" min="0" max="120" required>
+            </div>
+            <div class="form-group">
+                <label for="university_rating">University Rating (1-5):</label>
+                <input type="number" id="university_rating" name="university_rating" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="sop_strength">Statement of Purpose Strength (1-5):</label>
+                <input type="number" id="sop_strength" name="sop_strength" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="lor_strength">Letter of Recommendation Strength (1-5):</label>
+                <input type="number" id="lor_strength" name="lor_strength" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="cgpa">CGPA (Out of 10):</label>
+                <input type="number" step="0.01" id="cgpa" name="cgpa" min="0" max="10" required>
+            </div>
+            <div class="form-group">
+                <label for="research_exp">Research Experience (in years):</label>
+                <input type="number" id="research_exp" name="research_exp" min="0" max="10" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Predict">
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+
+document.getElementById('admission-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting the default way
+
+    const formData = new FormData(event.target);
+
+    fetch('/predict', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('result').innerHTML = `<h3>${data}</h3>`;
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+   </script>
+</body>
+</html>
